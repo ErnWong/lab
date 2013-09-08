@@ -47,7 +47,7 @@ define({
 		"simRate": 1,
 
 		// Simulation steps per tick:
-		"simStep": 100
+		"simStep": 50000
 
 	},
 
