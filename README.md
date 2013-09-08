@@ -3,7 +3,8 @@ Lab
 
 A (JavaScript) simulator for physics and mathematics and whatever else that works!
 
-There is the `Engine`, and other visualisation tools.
+There is the `Engine`, and other visualisation tools, e.g. `EventEmitter`,
+`Logger`.
 
 The Engine
 ------------
