@@ -1,0 +1,12 @@
+/*temp*/
+
+body {
+	font-family: Consolas, "Courier-New";
+}
+#out {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	background-color: #000;
+}
+

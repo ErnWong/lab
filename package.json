@@ -1,0 +1,15 @@
+{
+
+	"author": "Ernest Wong <ewon521@gmail.com>",
+
+	"version": "0.1.0",
+
+	"dependencies":{},
+
+	"devDependencies": {
+		"requirejs": "2.1.8"
+	},
+
+	"liscense": "MIT"
+
+}
