@@ -59,7 +59,25 @@ define(["events"], function(EventEmitter) {
 	};
 
 	// sets a value in the simulation
+	// e.g.
+	//	set("simRate", 0.5);
+	//	set("data.loc", [0,1]);
+	//	set({
+	//		"system": "spring",
+	//		"solver": function(data){},
+	//		"data": {
+	//			"t": 0, "vel": [0,0]
+	//		}
+	//	});//
 	proto.set = proto.setSetting = function set(id, value) {
+		if (typeof id === "object") {
+			for (var i in id) {
+				if (id.hasOwnProperty(i)) {
+					this.set(i,id[i]);
+				}
+			}
+			return;
+		}
 		if (!this.ready) {
 			this._changesPending[id] = value;
 			return;
@@ -82,9 +100,15 @@ define(["events"], function(EventEmitter) {
 	// (private) - handles a message from worker thread
 	proto._handleMessage = function handleMessage(evt) {
 		if (evt.data.type === "ready") {
+			var changes;
 			this.ready = true;
 			if (this._startWhenReady) {
 				this.start();
+			}
+			for (var i in changes) {
+				if (changes.hasOwnProperty(i)) {
+					this.set(i, changes[i]);
+				}
 			}
 			delete this._changesPending;
 		} else if (evt.data.type === "data") {

@@ -139,17 +139,24 @@ require( [
 			"get": get
 		},
 		setItems = {
-			"solver": function(id) {
-				if (typeof id !== "string") {
-					return;
+			"solver": function(val) {
+				switch (typeof val) {
+					case "string":
+						solvers[val] && (solveStep = solvers[val]);
+						break;
+					case "function":
+						solveStep = val;
+						brea;
 				}
-				solvers[id] && (solveStep = solvers[id]);
 			},
-			"system": function(id) {
-				if (typeof id !== "string") {
-					return;
+			"system": function(val) {
+				switch (typeof val) {
+					case "string":
+						systems[id] && (getAccel = systems[id]);
+						break;
+					case "function":
+						getAccel = val;
 				}
-				systems[id] && (getAccel = systems[id]);
 			},
 			"simStep": function(val) {
 				if (typeof val !== "number") {
@@ -227,6 +234,12 @@ require( [
 				} else if (keyStart === "dataInit") {
 					setObj(dataInit,id,cloneObj(value));
 					//dataInit[ckey] = cloneObj(value);
+				}
+			}
+		} else if (typeof value === "object") {
+			for (var i in value) {
+				if (value.hasOwnProperty(i)) {
+					set(i,value[i]);
 				}
 			}
 		}
