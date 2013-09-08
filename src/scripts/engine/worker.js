@@ -152,7 +152,7 @@ require( [
 			"system": function(val) {
 				switch (typeof val) {
 					case "string":
-						systems[id] && (getAccel = systems[id]);
+						systems[val] && (getAccel = systems[val]);
 						break;
 					case "function":
 						getAccel = val;
