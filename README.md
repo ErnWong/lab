@@ -19,3 +19,4 @@ This spawns a web worker, which consists of three parts:
 
  3. A stepper - put any corrections to the changes and advances the state's
     time forward, bringing the new changes.
+
