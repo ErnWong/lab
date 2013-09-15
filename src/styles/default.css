@@ -2,7 +2,59 @@
 
 body {
 	font-family: Consolas, "Courier-New";
+	margin: 0;
 }
+
+#logo{
+	background-color: #F8F8F8;
+	padding: 5px 10px;
+	display: inline-block;
+	border: 1px #DDD solid;
+	z-index:1000;
+	opacity: 0.6;
+
+	-moz-transition: opacity 0.3s;
+	-webkit-transition: opacity 0.3s;
+	-o-transition: opacity 0.3s;
+	transition: opacity 0.3s;
+}
+
+#logo:hover{
+	opacity: 1;
+}
+
+#logo>h1{
+/*
+	font-family: Verdana;
+	font-weight: 900;
+	font-size: 50px;
+	text-transform: uppercase;
+	color: rgba(255,255,255,0);
+	text-shadow:
+		0.02em 0.02em 0.06em #F2F2F2,
+		0      0      0      #555555,
+        2px    2px    0      #FFF;*/
+
+
+	font-family: Verdana;
+	font-weight: 900;
+
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+
+	margin: 0;
+/*
+	font-size: 40px;
+	color: rgba(255,255,255,1);
+	text-shadow:
+		-1px -1px 0 #CCC,
+		 1px -1px 0 #CCC,
+		-1px  1px 0 #CCC,
+		 1px  1px 0 #CCC;*/
+	font-size: 60px;
+	color: rgba(255,255,255,0);
+text-shadow: 0.02em 0.02em 0.06em #F2F2F2, 0 0 0 #555555, 2px 2px 0 #FFF;
+
 #out {
 	position: absolute;
 	width: 10px;
