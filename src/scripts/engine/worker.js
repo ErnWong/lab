@@ -40,7 +40,14 @@ require( [
 		setObj(base[id.shift()], id, val);
 	}
 
-	/* Converts an object into map (allows functions) *
+	var has = (function(){
+		var Has = Object.prototype.hasOwnProperty;
+		function has(obj, key) {
+			Has.call(obj,key);
+		}
+	})();
+
+	/* Converts an object into map (allows functions) */
 	function createHash(data) {
 		var out = Object.create? Object.create(null) : {}, i;
 		for ( i in data ) {
@@ -187,7 +194,7 @@ require( [
 		};
 
 
-	/* Convert objects to "hashes" * (inconsistent)
+	/* Convert objects to "hashes" */
 	systems = createHash(systems);
 	solvers = createHash(solvers);
 	steppers = createHash(steppers);
@@ -212,7 +219,7 @@ require( [
 
 			id = key.split(".");
 
-			if (setItems.hasOwnProperty(key)) {
+			if (has(setItems, key)) {
 				setItems[key](value);
 			} else if ((keyStart = id.shift()) === "data") {
 				setObj(data,id,cloneObj(value));
@@ -226,7 +233,7 @@ require( [
 			for (var i=0, len = key.length, ckey; i<len; i++) {
 				ckey = key[i];
 				id = ckey.split(".");
-				if (setItems.hasOwnProperty(ckey)) {
+				if (has(setItems, ckey)) {
 					setItems[ckey](value);
 				} else if ((keyStart=id.shift()) === "data") {
 					setObj(data,id,cloneObj(value));
@@ -238,7 +245,7 @@ require( [
 			}
 		} else if (typeof value === "object") {
 			for (var i in value) {
-				if (value.hasOwnProperty(i)) {
+				if (has(value, i)) {
 					set(i,value[i]);
 				}
 			}
@@ -283,14 +290,14 @@ require( [
 		if (!cmd) return;
 
 		// if cmd is string, just call command if it exists
-		if (typeof cmd === "string" && commands.hasOwnProperty(cmd)) {
+		if (typeof cmd === "string" && has(commands, cmd)) {
 			commands[cmd](data);
 		} else
 		// else if it looks like array, loop through and exec
 		if (typeof cmd.length === "number") {
 
 			for (var i=0, len = cmd.length; i<len; i++) {
-				commands.hasOwnProperty(cmd[i]) && commands[cmd[i]](data);
+				has(commands, cmd[i]) && commands[cmd[i]](data);
 			}
 
 		}
