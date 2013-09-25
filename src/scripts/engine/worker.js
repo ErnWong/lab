@@ -42,7 +42,7 @@ require( [
 
 	var has = (function(){
 		var Has = Object.prototype.hasOwnProperty;
-		function has(obj, key) {
+		return function has(obj, key) {
 			Has.call(obj,key);
 		}
 	})();
