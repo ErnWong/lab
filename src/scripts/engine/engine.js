@@ -1,5 +1,13 @@
 define(["events"], function(EventEmitter) {
 
+	// hasOwnProperty()
+	var has = (function(){
+		var Has = Object.prototype.hasOwnProperty;
+		return function has(obj, key) {
+			Has.call(obj,key);
+		}
+	})();
+
 	function Engine() {
 
 		this.ready = false;
@@ -47,7 +55,7 @@ define(["events"], function(EventEmitter) {
 		if (!this.ready) {
 			var i, changes = this._changesPending;
 			for ( var i in changes ) {
-				if ( changes.hasOwnProperty(i) && i.split(".")[0] === "data" ) {
+				if ( has(changes, i) && i.split(".")[0] === "data" ) {
 					delete changes[i];
 				}
 			}
@@ -72,7 +80,7 @@ define(["events"], function(EventEmitter) {
 	proto.set = proto.setSetting = function set(id, value) {
 		if (typeof id === "object") {
 			for (var i in id) {
-				if (id.hasOwnProperty(i)) {
+				if (has(id, i)) {
 					this.set(i,id[i]);
 				}
 			}
@@ -106,12 +114,14 @@ define(["events"], function(EventEmitter) {
 				this.start();
 			}
 			for (var i in changes) {
-				if (changes.hasOwnProperty(i)) {
+				if (has(changes, i)) {
 					this.set(i, changes[i]);
 				}
 			}
 			delete this._changesPending;
-		} else if (evt.data.type === "data") {
+			return;
+		}
+		if (evt.data.type === "data") {
 			this.data = evt.data.variables;
 			this.fps = evt.data.fps;
 			this.emitEvent("tick", this.data);

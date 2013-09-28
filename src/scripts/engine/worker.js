@@ -40,6 +40,7 @@ require( [
 		setObj(base[id.shift()], id, val);
 	}
 
+	// hasOwnProperty()
 	var has = (function(){
 		var Has = Object.prototype.hasOwnProperty;
 		return function has(obj, key) {
@@ -189,7 +190,8 @@ require( [
 				if (typeof val !== "object") {
 					return;
 				}
-				data = cloneObj(value);
+				//data = cloneObj(value);
+				dataInit = cloneObj(value);
 			}
 		};
 

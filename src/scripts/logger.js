@@ -10,6 +10,8 @@ define(["events"], function(EventEmitter) {
 		this.endTime = 1/0;
 		this.maxSize = 1/0;
 		this.process = null;
+		this._running = false;
+		this._handler = function() {};
 	}
 	var proto = Logger.prototype = new EventEmitter();
 
@@ -22,9 +24,11 @@ define(["events"], function(EventEmitter) {
 			this.step = step;
 		}
 		var logger = this;
-		process.addListener("tick", function(data) {
+		this._handler = function(data) {
 			logger._handleTick(data);
-		});
+		}
+		process.addListener("tick", handler);
+		this.running = true;
 		this.emitEvent("started");
 	};
 
@@ -38,7 +42,7 @@ define(["events"], function(EventEmitter) {
 
 	// Stops logging and listening to process
 	proto.stop = function stop() {
-		this.process.removeListener("tick", this._handleTick);
+		this.process.removeListener("tick", this._handler);
 		this.emitEvent("ended");
 	};
 
@@ -49,7 +53,7 @@ define(["events"], function(EventEmitter) {
 			data = this.data,
 			endId = this.data.length;
 		if (typeof start === "number") {
-			startId = search(data,start,true);
+			startId = search(data,"t",start,true);
 		}
 		if (typeof end === "number") {
 			endId = search(data,end,true);
@@ -61,9 +65,11 @@ define(["events"], function(EventEmitter) {
 	proto.listenTo = proto.changeProcess = function changeProcess(process) {
 		this.stop();
 		if (process === this.process) return true;
-		if (process.addListener instanceof EventEmitter) {
+		if (process instanceof EventEmitter) {
 			this.process = process;
-			this.start();
+			if (this.running) {
+				this.start();
+			}
 			this.emitEvent("processChanged");
 			return true;
 		}
@@ -71,10 +77,11 @@ define(["events"], function(EventEmitter) {
 	};
 
 	// (private) handle data from process
-	proto._handleTick(data) = function handler() {
+	proto._handleTick = function handleTick(data) {
 		//if (this._i++ % this.step
 		if (data.t > this.endTime) {
 			this.stop();
+			this.emitEvent("stopped");
 			return;
 		}
 		if (data.t < this.startTime) {
@@ -93,13 +100,13 @@ define(["events"], function(EventEmitter) {
 	return Logger;
 
 
-	function search(data,value,gt) {
+	function search(data,key,value,gt) {
 		var a = 0,
 			b = data.length;
 			mid, midData;
-		while (startB-StartA > 1) {
+		while (startB-StartA > 1) { // could it ever be -1? TODO investigate later
 			mid = floor((a+b)/2),
-			midData = data[mid];
+			midData = data[mid][key];
 			if (midData < value) {
 				a = startMid;
 				continue;
